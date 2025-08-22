@@ -7,7 +7,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     profile = models.ImageField(upload_to="profile_images/", default="defaults/profile.png")
-    cover = models.ImageField(upload_to="cover_images/",default="defaults/cover.avif")
+    cover = models.ImageField(upload_to="cover_images/",default="defaults/cover.png")
     followers = models.ManyToManyField("self", blank=True)
     following  = models.ManyToManyField("self", blank=True)
     verified = models.BooleanField(default=False)
