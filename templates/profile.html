@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  Profile - @{{ user.username }}
+{% endblock title %}
+
+{% block content %}
+
+  {% if user.cover %}
+    <img class="cover-image" src="{{ user.cover.url }}" alt="Cover image">
+  {% else %}
+    <img class="cover-image" src="{% static 'images/default_cover.jpg' %}" alt="Default cover">
+  {% endif %}
+
+  <div class="container">
+    <div class="profile-user-info">
+
+      {% if user.profile %}
+        <img class="profile-image" src="{{ user.profile.url }}" alt="Profile image">
+      {% else %}
+        <img class="profile-image" src="{% static 'images/default_profile.png' %}" alt="Default profile">
+      {% endif %}
+
+      <h4 class="profile-user-name">{{ user.get_full_name }}</h4>
+      <span class="text-muted profile-user-username">@{{ user.username }}</span>
+      <p class="profile-user-bio mt-2">{{ user.bio }}</p>
+      <span class="profile-user-add-info">Joined: 10 month ago</span>
+    </div>
+
+    <p class="profile-following-count">
+      <strong>{{ user.followings.all.count }}</strong> following
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <strong>{{ user.followers.all.count }}</strong> followers
+      &nbsp;&nbsp;&nbsp;&nbsp;
+    </p>
+
+    {% if user == request.user %}
+      <a href="{% url 'update' %}" class="btn">Tahrirlash</a>
+    {% else %}
+      <form action="{% url 'follow' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="username" value="{{ user.username }}">
+        <input type="hidden" name="redirect_url" value="{% url 'profile' user.username %}">
+        <button class="btn" type="submit">
+          {% if is_follow %} Unfollow {% else %} Follow {% endif %}
+        </button>
+      </form>
+    {% endif %}
+
+  </div>
+
+{% endblock content %}

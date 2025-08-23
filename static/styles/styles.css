@@ -10,6 +10,7 @@ body {
 a{
 color: a;
 text-decoration: none;
+
 }
 
 
@@ -18,7 +19,7 @@ text-decoration: none;
   font-size: larger;
   list-style-type: none;
   font-weight: 20px;
-  
+
 }
 
 
@@ -28,7 +29,7 @@ text-decoration: none;
   padding: 10px;
   border-radius: 25px;
   transition: 0.3s;
-  
+
 
 }
 
@@ -74,7 +75,7 @@ text-decoration: none;
   border: none;
   background-color: rgb(22,24,28);
   margin-top: 10px;
-  
+
 }
 
 .search-input:focus{
@@ -117,7 +118,7 @@ section::-webkit-scrollbar {
 .active{
   color: white;
   border-top: solid 2px rgb(29, 155, 240);
-  
+
 }
 
 section .type{
@@ -133,7 +134,7 @@ section .type{
 }
 .tweet-form{
   width: 100%;
-  
+
 }
 
 .tweet-form .tweet {

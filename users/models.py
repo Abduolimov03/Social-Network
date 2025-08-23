@@ -29,3 +29,5 @@ class Follwing(models.Model):
     class Meta:
         unique_together=['user','follower']
 
+
+
