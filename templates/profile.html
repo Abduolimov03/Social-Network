@@ -10,7 +10,7 @@
   {% if user.cover %}
     <img class="cover-image" src="{{ user.cover.url }}" alt="Cover image">
   {% else %}
-    <img class="cover-image" src="{% static 'images/default_cover.jpg' %}" alt="Default cover">
+    <img class="cover-image" src="{% static 'images/tweet-image.jfif' %}" alt="Default cover">
   {% endif %}
 
   <div class="container">
@@ -19,7 +19,7 @@
       {% if user.profile %}
         <img class="profile-image" src="{{ user.profile.url }}" alt="Profile image">
       {% else %}
-        <img class="profile-image" src="{% static 'images/default_profile.png' %}" alt="Default profile">
+        <img class="profile-image" src="{% static 'images/default.avif' %}" alt="Default profile">
       {% endif %}
 
       <h4 class="profile-user-name">{{ user.get_full_name }}</h4>
