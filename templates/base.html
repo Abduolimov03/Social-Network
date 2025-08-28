@@ -23,13 +23,13 @@
           <li class="nav-item" ><a href="{% url 'profile' request.user.username %} "><i class="fa-regular fa-user"></i>  &nbsp;   Profile </a></li>
           <li class="nav-item" ><a href="#"><i class="fa-solid fa-ellipsis"></i>  &nbsp;   More </a></li>
         </ul>
-        <button class="post_button" type="button"  >Post</button>
-       
+        <button class="post_button" type="button"  ><a href="{% url 'create_post' %}">Post</a> </button>
+
       </div>
       <!-- Main Content -->
       <section class="col-6">
           {% block content %}
-            
+
           {% endblock content %}
       </section>
       <!-- /Main Content -->
@@ -38,14 +38,14 @@
           <input name="search" type="search" class="search-input" placeholder="&nbsp;&nbsp;&nbsp;Search" >
         </form>
         <div class="trends">
-          <h4><strong>Trends for you</strong></h4>      
+          <h4><strong>Trends for you</strong></h4>
           <div class="trend" >
             <small class="category text-muted" >Politics ~ Trending</small><br>
-            <strong> Tashkent</strong><br> 
+            <strong> Tashkent</strong><br>
             <small class="views text-muted" >2.22M posts </small>
             <hr>
           </div>
-          <a href="#" class="more">Show more</a>  
+          <a href="#" class="more">Show more</a>
         </div>
         <hr style="color: white;" >
         <span class="text-muted" ><center>Abdurasulov Codes - 2023</center></span>
