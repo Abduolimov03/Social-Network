@@ -1,30 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}
-    Home Page
-{% endblock title %}
+{% block title %}Home Page{% endblock %}
 
 {% block content %}
 <div class="row type">
   <div class="col-6 active">
-     <p><center><b>For You</b></center></p>
+     <p class="text-center"><b>For You</b></p>
   </div>
-  <div class="col-6 ">
-    <p><center><b>Following</b></center></p>
+  <div class="col-6">
+    <p class="text-center"><b>Following</b></p>
  </div>
 </div>
-<div class="container">
-  <div class="row tweet">
+
+<div class="container mt-4">
+  <!-- New Post Form -->
+  <div class="row tweet mb-4">
     <div class="col-2">
-      <!-- Profile image -->
+      <img src="{% static 'images/default.jpg' %}" class="avatar" alt="Profile picture">
     </div>
     <div class="col-10">
       <form class="tweet-form" action="{% url 'create_post' %}" method="post" enctype="multipart/form-data">
           {% csrf_token %}
-          <input type="text" placeholder="What is happening?!" name="body" class="tweet" required>
+          <input type="text" placeholder="What is happening?!" name="body" class="form-control mb-2" required>
           <input id="tweet-image" type="file" name="media" accept="image/*,video/*" hidden>
-          <label class="tweet-media" for="tweet-image"><i class="fa-regular fa-image"></i></label>
-          <button class="btn" type="submit">Post</button>
+          <label class="btn btn-outline-secondary mb-2" for="tweet-image"><i class="fa-regular fa-image"></i> Add Media</label>
+          <button class="btn btn-primary" type="submit">Post</button>
       </form>
     </div>
   </div>
@@ -32,41 +32,47 @@
   <!-- Posts Start -->
   <div class="posts">
     {% for post in posts %}
-    <!-- One Post Start -->
-    <div class="row post-one mt-3">
+    <div class="row post-one mb-4 p-3 shadow-sm rounded bg-white">
       <div class="col-1 post-avatar">
-          <img class="avatar" src="{% static '/images/default.jpg' %}" alt="Profile picture">
+        <img class="avatar rounded-circle" src="{% static 'images/default.jpg' %}" alt="Profile picture">
       </div>
-      <div class="col-10 post">
-        <div class="post-user-info">
-          <b class="main">{{ post.user.username }}</b>
-          <span class="grey"> @{{ post.user.username }} | {{ post.created|timesince }} ago</span>
-          <div class="content mt-2">
-              <div class="post mb-3">
-                <p class="main">{{ post.body }}</p>
-                {% if post.media %}
-                  <img src="{{ post.media.url }}" alt="Tweet media" class="image-tweet">
-                {% endif %}
-              </div>
-              <div class="actions d-flex justify-content-between mt-3 ">
-<a href="{% url 'post_detail' post.id %}" class="btn btn-sm btn-outline-secondary">
-  💬 {{ post.comments.count }}
-</a>                <div class="action small like"><i class="fa-regular fa-heart"></i> {{ post.likes }}</div>
-                <div class="action small save">
-                  <a href="{% url 'toggle_bookmark' post.id %}">
-                    <i class="fa-regular fa-bookmark"></i>
-                  </a>
-                </div>
-              </div>
-          </div>
+      <div class="col-11 post">
+        <div class="post-user-info mb-2">
+          <b>{{ post.user.username }}</b>
+          <span class="text-muted"> @{{ post.user.username }} | {{ post.created|timesince }} ago</span>
+        </div>
+        <div class="post-content mb-2">
+          <p>{{ post.body }}</p>
+          {% if post.media %}
+            <img src="{{ post.media.url }}" alt="Post media" class="img-fluid rounded mb-2">
+          {% endif %}
+        </div>
+
+        <!-- Post Actions -->
+        <div class="d-flex justify-content-between align-items-center">
+          <!-- Comments -->
+          <a href="{% url 'post_detail' post.id %}" class="btn btn-sm btn-outline-secondary">
+            💬 {{ post.comments.count }}
+          </a>
+
+          <!-- Likes -->
+          <form action="{% url 'toggle_like' post.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-link p-0" style="color: {% if request.user in post.likes.all %}red{% else %}gray{% endif %};">
+              <i class="fa-solid fa-heart"></i> {{ post.likes.count }}
+            </button>
+          </form>
+
+          <!-- Bookmark -->
+          <a href="{% url 'toggle_bookmark' post.id %}" class="btn btn-sm btn-outline-primary">
+            <i class="fa-regular fa-bookmark"></i>
+          </a>
         </div>
       </div>
     </div>
-    <!-- One Post End -->
     {% empty %}
-      <p class="text-muted">Hozircha post yo‘q</p>
+      <p class="text-muted text-center">Hozircha post yo‘q</p>
     {% endfor %}
   </div>
-  <!-- Posts End -->
 </div>
 {% endblock content %}

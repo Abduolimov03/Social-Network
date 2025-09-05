@@ -14,7 +14,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     media = models.FileField(upload_to="post_media/")
-    likes = models.PositiveBigIntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     saveds = models.PositiveBigIntegerField(default=0)
     reposts = models.PositiveBigIntegerField(default=0)
     views = models.PositiveBigIntegerField(default=0)
@@ -24,6 +24,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.body
+
+    def total_likes(self):
+        return self.likes.count()
 
 class Action(models.Model):
     action_type = models.CharField(max_length=25, choices = ACTION_CHOICES)

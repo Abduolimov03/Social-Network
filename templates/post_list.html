@@ -28,12 +28,33 @@
           </div>
         {% endif %}
 
-        <!-- Actions -->
-        <div class="d-flex justify-content-between mt-3">
-          <a href="{% url 'toggle_bookmark' post.id %}"
-             class="btn btn-sm btn-outline-primary">
-            📑 Save
-          </a>
+        <!-- Actions: Like, Comment, Bookmark -->
+        <div class="d-flex justify-content-start mt-3 gap-3 align-items-center">
+
+          <!-- Like tugmasi -->
+          <div class="action small like">
+            <form action="{% url 'toggle_like' post.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link p-0" style="color: {% if request.user in post.likes.all %}red{% else %}gray{% endif %};">
+                    <i class="fa-solid fa-heart"></i> {{ post.total_likes }}
+                </button>
+            </form>
+          </div>
+
+          <!-- Comment tugmasi -->
+          <div class="action small comment">
+            <a href="{% url 'post_detail' post.id %}" class="btn btn-link p-0 text-muted">
+              <i class="fa-regular fa-comment"></i> {{ post.comments.count }}
+            </a>
+          </div>
+
+          <!-- Bookmark tugmasi -->
+          <div class="action small bookmark">
+            <a href="{% url 'toggle_bookmark' post.id %}" class="btn btn-sm btn-outline-primary">
+              📑 Save
+            </a>
+          </div>
+
         </div>
       </div>
     </div>

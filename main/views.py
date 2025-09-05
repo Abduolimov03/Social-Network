@@ -8,6 +8,15 @@ from django.core.paginator import Paginator
 
 
 @login_required
+def toggle_like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect(request.META.get('HTTP_REFERER', 'index'))
+
+@login_required
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = post.comments.all().order_by('-created_at')

@@ -1,35 +1,88 @@
-<h3 class="mb-4">💬 Comments</h3>
+{% extends "base.html" %}
 
-<!-- mavjud commentlar -->
-{% for comment in comments %}
-  <div class="card mb-3 shadow-sm border-0">
+{% block title %}Post by @{{ post.user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 700px;">
+
+  <!-- Post Card -->
+  <div class="card mb-4 shadow-sm border border-light" style="border-radius: 14px;">
     <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <strong>@{{ comment.user.username }}</strong>
-        <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+
+      <!-- User info -->
+      <h6 class="mb-0 fw-semibold">@{{ post.user.username }}</h6>
+      <small class="text-muted">{{ post.created|timesince }} ago</small>
+
+      <!-- Post body -->
+      <p class="card-text mt-2" style="font-size: 1.05rem; line-height: 1.6;">
+        {{ post.body }}
+      </p>
+
+      <!-- Media -->
+      {% if post.media %}
+        <div class="text-center mt-3">
+          <img src="{{ post.media.url }}"
+               alt="Post media"
+               class="img-fluid rounded shadow-sm"
+               style="max-height: 450px; object-fit: cover;">
+        </div>
+      {% endif %}
+
+      <!-- Actions: Like + Bookmark -->
+      <div class="d-flex justify-content-start mt-3 gap-3">
+
+        <!-- Like -->
+        <form action="{% url 'toggle_like' post.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link p-0" style="color: {% if request.user in post.likes.all %}red{% else %}gray{% endif %}; font-size: 1.2rem;">
+            <i class="fa-solid fa-heart"></i> {{ post.likes.count }}
+          </button>
+        </form>
+
+        <!-- Bookmark -->
+        <a href="{% url 'toggle_bookmark' post.id %}" class="btn btn-outline-primary btn-sm">
+          📑 Save
+        </a>
+
       </div>
-      <p class="mt-2">{{ comment.body }}</p>
     </div>
   </div>
-{% empty %}
-  <p class="text-muted">No comments yet. Be the first to write one!</p>
-{% endfor %}
 
-<hr>
+  <!-- Comments Section -->
+  <h3 class="mb-4">💬 Comments</h3>
 
-<!-- yangi comment yozish -->
-<div class="card shadow-sm border-0 p-3 mt-4">
-  <h5 class="mb-3">✍️ Add a comment</h5>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <div class="d-flex justify-content-between mt-3">
-      <a href="{% url 'index' %}" class="btn btn-outline-secondary">
-        ⬅️ Back
-      </a>
-      <button type="submit" class="btn btn-primary">
-        💾 Add Comment
-      </button>
+  {% for comment in comments %}
+    <div class="card mb-3 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <strong>@{{ comment.user.username }}</strong>
+          <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+        </div>
+        <p class="mt-2">{{ comment.body }}</p>
+      </div>
     </div>
-  </form>
+  {% empty %}
+    <p class="text-muted">No comments yet. Be the first to write one!</p>
+  {% endfor %}
+
+  <hr>
+
+  <!-- Add Comment -->
+  <div class="card shadow-sm border-0 p-3 mt-4">
+    <h5 class="mb-3">✍️ Add a comment</h5>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="d-flex justify-content-between mt-3">
+        <a href="{% url 'post_list' %}" class="btn btn-outline-secondary">
+          ⬅️ Back
+        </a>
+        <button type="submit" class="btn btn-primary">
+          💾 Add Comment
+        </button>
+      </div>
+    </form>
+  </div>
+
 </div>
+{% endblock %}
