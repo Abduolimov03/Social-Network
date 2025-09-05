@@ -1,11 +1,33 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
-from .forms import PostForm
-from .models import Post, Bookmark
+from .forms import PostForm, CommentForm
+from .models import Post, Bookmark, Comment
 from django.core.paginator import Paginator
 
 
+
+@login_required
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = post.comments.all().order_by('-created_at')
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = CommentForm()
+
+    return render(request, "post_detail.html", {
+        "post": post,
+        "comments": comments,
+        "form": form
+    })
 
 # 🔹 Post yaratish
 @login_required

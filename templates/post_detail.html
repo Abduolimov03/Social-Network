@@ -1,0 +1,35 @@
+<h3 class="mb-4">💬 Comments</h3>
+
+<!-- mavjud commentlar -->
+{% for comment in comments %}
+  <div class="card mb-3 shadow-sm border-0">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <strong>@{{ comment.user.username }}</strong>
+        <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+      </div>
+      <p class="mt-2">{{ comment.body }}</p>
+    </div>
+  </div>
+{% empty %}
+  <p class="text-muted">No comments yet. Be the first to write one!</p>
+{% endfor %}
+
+<hr>
+
+<!-- yangi comment yozish -->
+<div class="card shadow-sm border-0 p-3 mt-4">
+  <h5 class="mb-3">✍️ Add a comment</h5>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="d-flex justify-content-between mt-3">
+      <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+        ⬅️ Back
+      </a>
+      <button type="submit" class="btn btn-primary">
+        💾 Add Comment
+      </button>
+    </div>
+  </form>
+</div>
