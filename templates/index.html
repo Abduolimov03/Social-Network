@@ -51,7 +51,11 @@
               <div class="actions d-flex justify-content-between mt-3 ">
                 <div class="action small comment"><i class="fa-regular fa-comment"></i> {{ post.views }}</div>
                 <div class="action small like"><i class="fa-regular fa-heart"></i> {{ post.likes }}</div>
-                <div class="action small save"><i class="fa-regular fa-bookmark"></i> {{ post.saveds }}</div>
+                <div class="action small save">
+                  <a href="{% url 'toggle_bookmark' post.id %}">
+                    <i class="fa-regular fa-bookmark"></i>
+                  </a>
+                </div>
               </div>
           </div>
         </div>

@@ -2,52 +2,70 @@
 {% load static %}
 
 {% block title %}
-  Profile - @{{ user.username }}
+  Profile - @{{ profile_user.username }}
 {% endblock title %}
 
 {% block content %}
+<div class="profile-container shadow rounded-3 overflow-hidden mb-4">
 
-  {% if user.cover %}
-    <img class="cover-image" src="{{ user.cover.url }}" alt="Cover image">
+  <!-- Cover image -->
+  {% if profile_user.cover %}
+    <img class="cover-image w-100" src="{{ profile_user.cover.url }}" alt="Cover image">
   {% else %}
-    <img class="cover-image" src="{% static 'images/tweet-image.jfif' %}" alt="Default cover">
+    <img class="cover-image w-100" src="{% static 'images/tweet-image.jfif' %}" alt="Default cover">
   {% endif %}
 
-  <div class="container">
-    <div class="profile-user-info">
+  <!-- Profile info -->
+  <div class="p-4 d-flex align-items-center gap-4">
 
-      {% if user.profile %}
-        <img class="profile-image" src="{{ user.profile.url }}" alt="Profile image">
-      {% else %}
-        <img class="profile-image" src="{% static 'images/default.avif' %}" alt="Default profile">
-      {% endif %}
-
-      <h4 class="profile-user-name">{{ user.get_full_name }}</h4>
-      <span class="text-muted profile-user-username">@{{ user.username }}</span>
-      <p class="profile-user-bio mt-2">{{ user.bio }}</p>
-      <span class="profile-user-add-info">Joined: 10 month ago</span>
-    </div>
-
-    <p class="profile-following-count">
-      <strong>{{ user.followings.all.count }}</strong> following
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <strong>{{ user.followers.all.count }}</strong> followers
-      &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-
-    {% if user == request.user %}
-      <a href="{% url 'update' %}" class="btn">Tahrirlash</a>
+    {% if profile_user.profile %}
+      <img class="profile-image rounded-circle border border-3 border-white shadow"
+           src="{{ profile_user.profile.url }}" alt="Profile image"
+           style="width:120px; height:120px; object-fit:cover;">
     {% else %}
-      <form action="{% url 'follow' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="username" value="{{ user.username }}">
-        <input type="hidden" name="redirect_url" value="{% url 'profile' user.username %}">
-        <button class="btn" type="submit">
-          {% if is_follow %} Unfollow {% else %} Follow {% endif %}
-        </button>
-      </form>
+      <img class="profile-image rounded-circle border border-3 border-white shadow"
+           src="{% static 'images/default.avif' %}" alt="Default profile"
+           style="width:120px; height:120px; object-fit:cover;">
     {% endif %}
+
+    <div>
+      <h3 class="mb-0 fw-bold">{{ profile_user.get_full_name }}</h3>
+      <span class="text-muted">@{{ profile_user.username }}</span>
+      <p class="mt-2 mb-1">{{ profile_user.bio }}</p>
+      <small class="text-muted">📅 Joined {{ profile_user.date_joined|timesince }} ago</small>
+    </div>
 
   </div>
 
+  <!-- Followers / Following -->
+  <div class="px-4 py-2 border-top bg-light d-flex gap-4">
+    <span><strong>{{ profile_user.followings.all.count }}</strong> Following</span>
+    <span><strong>{{ profile_user.followers.all.count }}</strong> Followers</span>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="px-4 py-3">
+    {% if profile_user == request.user %}
+<a href="{% url 'update' %}" class="btn btn-outline-primary">✏️ Edit Profile</a>
+
+    {% else %}
+      <form action="{% url 'follow' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="username" value="{{ profile_user.username }}">
+        <input type="hidden" name="redirect_url" value="{% url 'profile' profile_user.username %}">
+        <button class="btn {% if is_follow %}btn-outline-danger{% else %}btn-primary{% endif %}" type="submit">
+          {% if is_follow %} ❌ Unfollow {% else %} ➕ Follow {% endif %}
+        </button>
+      </form>
+    {% endif %}
+  </div>
+
+</div>
+
+<style>
+  .cover-image {
+    height: 250px;
+    object-fit: cover;
+  }
+</style>
 {% endblock content %}

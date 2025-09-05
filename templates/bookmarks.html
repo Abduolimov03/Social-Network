@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Bookmarks{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 700px;">
+  <!-- Title -->
+  <div class="d-flex align-items-center mb-4 pb-2 border-bottom">
+    <h2 class="fw-bold text-primary mb-0">📑 Saved Posts</h2>
+  </div>
+
+  {% for bookmark in bookmarks %}
+    <div class="card mb-4 shadow-sm border-0 rounded-3">
+      <div class="card-body">
+        <!-- User info -->
+        <div class="mb-2">
+          <h6 class="mb-0 fw-semibold">{{ bookmark.post.user.username }}</h6>
+          <small class="text-muted">{{ bookmark.post.created|timesince }} ago</small>
+        </div>
+
+        <!-- Post body -->
+        {% if bookmark.post.body %}
+          <p class="card-text">{{ bookmark.post.body }}</p>
+        {% endif %}
+
+        <!-- Media -->
+        {% if bookmark.post.media %}
+          <div class="text-center mt-3">
+            <img src="{{ bookmark.post.media.url }}"
+                 alt="Saved media"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height: 400px; object-fit: cover;">
+          </div>
+        {% endif %}
+
+        <!-- Action -->
+        <div class="mt-3 text-end">
+          <a href="{% url 'toggle_bookmark' bookmark.post.id %}"
+             class="btn btn-sm btn-outline-danger">❌ Remove</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="alert alert-info text-center p-4 rounded-3">
+      📭 Hali hech qanday post saqlamadingiz
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

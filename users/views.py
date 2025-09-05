@@ -47,15 +47,19 @@ class UserUpdateView(LoginRequiredMixin, View):
         else:
             return(request, "registration/user_update.html", {"form": form})
 
-class ProfileView(LoginRequiredMixin,View):
-    def get(self,request,username):
-        user=get_object_or_404(User,username=username)
-        is_followed=False
-        if Follwing.objects.filter(user=user,follower=request.user).exists():
-            is_followed=True
-        return render(request,'profile.html',{'user':user})
+class ProfileView(LoginRequiredMixin, View):
+    def get(self, request, username):
+        profile_user = get_object_or_404(User, username=username)
 
+        is_followed = Follwing.objects.filter(
+            user=profile_user, follower=request.user
+        ).exists()
 
+        context = {
+            "profile_user": profile_user,
+            "is_followed": is_followed,
+        }
+        return render(request, "profile.html", context)
 
 class FollowView(LoginRequiredMixin,View):
     def post(self,request):

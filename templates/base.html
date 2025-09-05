@@ -17,11 +17,16 @@
           <li class="nav-item" ><a href="#"><i class="fa-solid fa-magnifying-glass"></i> &nbsp; Explore </a></li>
           <li class="nav-item" ><a href="#"><i class="fa-solid fa-bell"></i> &nbsp; Notifications</a> </li>
           <li class="nav-item" ><a href="#"><i class="fa-solid fa-envelope"></i> &nbsp;  Messages</a> </li>
-          <li class="nav-item" ><a href="#"><i class="fa-solid fa-list"></i>  &nbsp;  Lists</a> </li>
-          <li class="nav-item" ><a href="#"><i class="fa-regular fa-bookmark"></i>  &nbsp;   Bookmarks </a></li>
+          <li class="nav-item" ><a href="{% url 'post_list' %}"><i class="fa-solid fa-list"></i>  &nbsp;  Lists</a> </li>
+            <li class="nav-item"><a href="{% url 'bookmarks_list' %}">
+              <i class="fa-regular fa-bookmark"></i> &nbsp; Bookmarks
+            </a></li>
           <li class="nav-item" ><a href="#"><i class="fa-solid fa-people-group"></i>  &nbsp; Community   </a> </li>
-          <li class="nav-item" ><a href="# "><i class="fa-regular fa-user"></i>  &nbsp;   Profile </a></li>
-          <li class="nav-item" ><a href="#"><i class="fa-solid fa-ellipsis"></i>  &nbsp;   More </a></li>
+<li class="nav-item">
+  <a href="{% url 'profile' request.user.username %}">
+    <i class="fa-regular fa-user"></i> &nbsp; Profile
+  </a>
+</li>          <li class="nav-item" ><a href="#"><i class="fa-solid fa-ellipsis"></i>  &nbsp;   More </a></li>
         </ul>
         <button class="post_button" type="button"  ><a href="{% url 'create_post' %}">Post</a> </button>
 

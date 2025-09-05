@@ -1,14 +1,105 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Yangi post qo'shish</title>
-</head>
-<body>
-    <h1>Yangi post qo'shish</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+
+{% block content %}
+<div class="container">
+  <div class="form-card">
+    <h2 class="form-title">➕ Create a New Post</h2>
+    <form method="post" enctype="multipart/form-data" class="post-form">
+      {% csrf_token %}
+      <div class="form-fields">
         {{ form.as_p }}
-        <button type="submit">Saqlash</button>
+      </div>
+      <button type="submit" class="btn-submit">Save Post</button>
     </form>
-</body>
-</html>
+
+    <!-- Qaytish tugmasi -->
+    <a href="{% url 'index' %}" class="btn-back">⬅ Back to Home</a>
+  </div>
+</div>
+
+<style>
+  /* Umumiy container */
+  .container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  /* Card uslubi */
+  .form-card {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  /* Sarlavha */
+  .form-title {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  /* Form elementlari */
+  .post-form p {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .post-form input,
+  .post-form textarea,
+  .post-form select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .post-form input:focus,
+  .post-form textarea:focus,
+  .post-form select:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 6px rgba(74, 144, 226, 0.4);
+  }
+
+  /* Tugmalar */
+  .btn-submit,
+  .btn-back {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+
+  .btn-submit {
+    background: #4a90e2;
+    color: white;
+    border: none;
+  }
+
+  .btn-submit:hover {
+    background: #357ABD;
+  }
+
+  .btn-back {
+    background: #f0f0f0;
+    color: #333;
+  }
+
+  .btn-back:hover {
+    background: #ddd;
+  }
+</style>
+{% endblock %}

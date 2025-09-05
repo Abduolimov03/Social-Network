@@ -9,7 +9,7 @@ urlpatterns = [
     path("logout/", UserLogoutView.as_view(), name="logout"),
     path("password-change/", PasswordChangeView.as_view(template_name="registration/pass_change.html"), name="password_change"),
     path("password-change/done", PasswordChangeDoneView.as_view(template_name="registration/pass_change_done.html"), name="password_change_done"),
-    path("@<str:username>/",ProfileView.as_view(),name="profile"),
+    path("users/profile/<str:username>/", ProfileView.as_view(), name="profile"),
     path('follow/',FollowView.as_view(),name='follow')
 ]
  
